@@ -1,0 +1,242 @@
+/* Import Google Font (Place at the very top) */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
+
+/* --- CSS Custom Properties (Variables) --- */
+:root {
+  --bg-dark: #0f0f0f;
+  --bg-dark-alt: #141414;
+  --bg-footer: #111;
+  --header-grad-start: #1e1e2f;
+  --header-grad-end: #33334d;
+
+  --text-light: #f2f2f2;
+  --text-muted: #ccc;
+  --text-footer: #aaa;
+  --accent-color: #fbbf24; /* Yellow */
+
+  --border-color: #2a2a2a;
+  --shadow-color-light: rgba(255, 255, 255, 0.1);
+  --shadow-color-dark: rgba(0, 0, 0, 0.4);
+  --header-shadow: rgba(0,0,0,0.3);
+
+  --font-primary: 'Ubuntu', sans-serif;
+  --base-font-size: 16px; /* Adjust as needed */
+  --line-height-base: 1.6;
+
+  --transition-duration-text: 0.8s;
+  --transition-duration-image: 1s;
+  --transition-delay-image: 0.15s; /* Slight delay for image */
+  --transition-timing-func: ease-out;
+}
+
+/* --- Basic Reset & Global Styles --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+   scroll-behavior: smooth;
+   font-size: var(--base-font-size); /* Base for REM units */
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-dark);
+  color: var(--text-light);
+  line-height: var(--line-height-base);
+  overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
+/* --- Header Styling --- */
+header {
+  background: linear-gradient(45deg, var(--header-grad-start), var(--header-grad-end));
+  padding: 2rem;
+  text-align: center;
+  position: sticky; /* Stick to top */
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 4px 10px var(--header-shadow);
+}
+
+header h1 {
+  font-size: clamp(2rem, 5vw, 2.5rem); /* Responsive font size */
+  color: var(--text-light);
+  font-weight: 700;
+  animation: fadeDown 1s ease-in-out; /* Header entry animation */
+}
+
+/* --- Main Content Area --- */
+main {
+  /* No specific styles needed, sections handle padding */
+}
+
+/* --- Story Section Styling --- */
+.story {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; /* Center items within flex container */
+  gap: 3rem;
+  padding: 5rem 6%; /* Use percentage for side padding */
+  min-height: 90vh; /* Ensure sections take up significant height */
+  overflow: hidden; /* Contain child elements/animations */
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+}
+
+/* Alternating Layout */
+.story:nth-child(even) {
+  flex-direction: row-reverse;
+  background-color: var(--bg-dark-alt); /* Subtle bg difference */
+}
+
+/* --- Text Content Styling --- */
+.text {
+  flex-basis: 45%; /* Define base width */
+  flex-grow: 1; /* Allow growing */
+  max-width: 550px; /* Max width for readability */
+  /* Animation: Initial State */
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity var(--transition-duration-text) var(--transition-timing-func),
+              transform var(--transition-duration-text) var(--transition-timing-func);
+}
+
+/* Adjust text initial position for even rows (coming from right) */
+.story:nth-child(even) .text {
+  transform: translateX(40px);
+}
+
+.text h2 {
+  font-size: clamp(1.8rem, 4vw, 2.2rem); /* Responsive font size */
+  margin-bottom: 1rem;
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+.text p {
+  font-size: clamp(1rem, 2.5vw, 1.1rem); /* Responsive font size */
+  color: var(--text-muted);
+}
+
+/* --- Image Styling --- */
+.image {
+  flex-basis: 45%; /* Define base width */
+  flex-grow: 1; /* Allow growing */
+  max-width: 600px; /* Max width for image container */
+  text-align: center;
+  /* Animation: Initial State */
+  opacity: 0;
+  transform: scale(0.95) translateY(20px);
+  transition: opacity var(--transition-duration-image) var(--transition-timing-func) var(--transition-delay-image),
+              transform var(--transition-duration-image) var(--transition-timing-func) var(--transition-delay-image);
+}
+
+.image img {
+  display: block;
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 15px;
+  box-shadow: 0 5px 25px var(--shadow-color-dark);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* For hover effect */
+}
+
+/* --- Visible State (Triggered by JS) --- */
+.story.visible .text,
+.story.visible .image {
+  opacity: 1;
+  transform: translate(0, 0) scale(1); /* Reset transforms */
+}
+
+/* Add subtle hover effect ONLY when image is visible */
+.story.visible .image:hover img {
+    transform: scale(1.03);
+    box-shadow: 0 8px 35px var(--shadow-color-dark);
+}
+
+
+/* --- Footer Styling --- */
+footer {
+  text-align: center;
+  padding: 2rem;
+  background: var(--bg-footer);
+  color: var(--text-footer);
+  font-size: 0.9rem;
+  margin-top: 0; /* Removed margin, using border */
+  border-top: 1px solid var(--border-color);
+}
+
+/* --- Keyframe Animations (Only for Header) --- */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsive Adjustments --- */
+
+/* Medium Screens / Tablets */
+@media (max-width: 992px) {
+  .story {
+    padding: 4rem 5%;
+    gap: 2rem;
+    min-height: auto; /* Allow height to adjust */
+  }
+  .text, .image {
+      flex-basis: 48%; /* Slightly adjust basis */
+  }
+}
+
+/* Small Screens / Mobiles */
+@media (max-width: 768px) {
+  header h1 { font-size: 2rem; }
+
+  .story,
+  .story:nth-child(even) {
+    flex-direction: column; /* Stack vertically */
+    padding: 3rem 5%;
+    text-align: center;
+  }
+
+  .text {
+     margin-bottom: 2.5rem; /* Space below text when stacked */
+  }
+
+  /* Reset transforms for initial state on mobile (rely mostly on opacity) */
+  .text,
+  .story:nth-child(even) .text,
+  .image {
+     transform: none;
+     flex-basis: auto; /* Reset flex basis */
+     max-width: 95%;   /* Allow slightly more width */
+     /* Keep opacity transition, maybe simplify transform transition */
+     transition: opacity 0.8s ease-out;
+  }
+
+  /* Initial state for mobile (opacity only) */
+  .story:not(.visible) .text,
+  .story:not(.visible) .image {
+      opacity: 0;
+  }
+
+  /* Visible state for mobile */
+  .story.visible .text,
+  .story.visible .image {
+      opacity: 1;
+  }
+
+  .image img {
+     max-width: 100%;
+     margin: 0 auto 1rem auto; /* Center and add bottom margin */
+  }
+
+  .text h2 { font-size: 1.7rem; }
+  .text p { font-size: 1rem; }
+
+  /* Disable image hover scale on touch devices (optional but often good) */
+  .story.visible .image:hover img {
+      transform: none;
+      box-shadow: 0 5px 25px var(--shadow-color-dark); /* Reset hover shadow */
+  }
+}
