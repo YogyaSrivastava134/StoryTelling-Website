@@ -16,13 +16,8 @@ const handleIntersection = (entries, observer) => {
   entries.forEach(entry => {
     // entry.isIntersecting is true if the element is visible (based on threshold)
     if (entry.isIntersecting) {
-      // Add the 'visible' class to the element
-      entry.target.classList.add('visible');
-
-      // --- Optional: Stop observing after the element becomes visible ---
-      // Useful if you want the animation to run only once.
-      // Uncomment the line below to enable this behavior.
-      // observer.unobserve(entry.target);
+  entry.target.classList.add('visible');
+  observer.unobserve(entry.target); // Animate once
 
     } else {
       // --- Optional: Remove class if element scrolls out of view ---
@@ -46,4 +41,12 @@ if (stories.length > 0) {
   });
 } else {
   console.log("No '.story' elements found to observe."); // Feedback if selector fails
+}
+
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(handleIntersection, observerOptions);
+  stories.forEach(story => observer.observe(story));
+} else {
+  // Fallback: show all stories if IntersectionObserver not supported
+  stories.forEach(story => story.classList.add('visible'));
 }
